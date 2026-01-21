@@ -8,6 +8,22 @@
 </head>
 <body>
 
+    <div class="admin-top-right">
+        <button onclick="toggleLogin()">Admin Panel</button>
+        <div id="login-box" class="login-popup" style="display: none;">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="checkLogin()">Login</button>
+        </div>
+    </div>
+
+    <div id="admin-controls" style="display: none; background: #d4af37; color: #4a0404; padding: 20px;">
+        <h3>Welcome, Amish! Upload New Photos:</h3>
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="alert('Upload successful (Simulation)')">Upload Photo</button>
+        <button onclick="location.reload()">Logout</button>
+    </div>
+
     <section class="hero">
         <div class="couple-container">
             <div class="person">
@@ -16,9 +32,7 @@
                 <p>(Groom)</p>
             </div>
             
-            <div class="heart-divider">
-                <span class="heart">❤️</span>
-            </div>
+            <div class="heart-divider">❤️</div>
 
             <div class="person">
                 <div class="frame"><img src="bride.jpg" alt="Bride"></div>
@@ -55,5 +69,24 @@
         <p>Party Dates: January 2 & 3, 2030</p>
     </section>
 
+    <script>
+        function toggleLogin() {
+            var box = document.getElementById("login-box");
+            box.style.display = (box.style.display === "none") ? "block" : "none";
+        }
+
+        function checkLogin() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+
+            if (user === "Amish Paudel" && pass === "amish78") {
+                document.getElementById("admin-controls").style.display = "block";
+                document.getElementById("login-box").style.display = "none";
+                alert("Login Successful!");
+            } else {
+                alert("Invalid Username or Password");
+            }
+        }
+    </script>
 </body>
 </html>

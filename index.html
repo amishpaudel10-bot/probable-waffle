@@ -3,87 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amish & Naima Wedding 2030</title>
+    <title>Amish & Naima Wedding</title>
     <style>
-        body { background-color: #4a0404; color: white; font-family: sans-serif; text-align: center; margin: 0; }
-        .admin-top { position: absolute; top: 10px; right: 10px; z-index: 100; }
-        .admin-btn { background: #d4af37; color: #4a0404; border: none; padding: 5px 10px; font-weight: bold; cursor: pointer; border-radius: 4px; }
-        .login-popup { background: white; color: black; padding: 15px; border-radius: 5px; display: none; flex-direction: column; gap: 8px; margin-top: 5px; border: 2px solid #d4af37; }
-        #upload-section { display: none; background: #f1c40f; color: #4a0404; padding: 20px; border-bottom: 4px solid #d4af37; }
-        .upload-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 10px; }
+        /* 1. FLOWER BLAST ANIMATION */
+        #flower-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #4a0404;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            animation: fadeOut 1s forwards 3s; /* Fades out after 3s */
+        }
+        .flower { position: absolute; animation: blast 2s ease-out infinite; }
+        @keyframes blast {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+        /* 2. MAIN STYLING */
+        body { background-color: #4a0404; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
         
-        .couple-container { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 40px 10px; }
-        .frame { border: 4px solid #d4af37; background: white; padding: 5px; width: 140px; height: 180px; }
+        /* Admin Section */
+        .admin-section { position: absolute; top: 10px; right: 10px; z-index: 100; }
+        .admin-btn { background: #d4af37; color: #4a0404; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        .login-box { background: white; color: black; padding: 15px; border-radius: 5px; display: none; flex-direction: column; gap: 10px; margin-top: 5px; border: 2px solid #d4af37; }
+        #admin-panel { display: none; background: #d4af37; color: #4a0404; padding: 20px; border-bottom: 5px solid #b8860b; }
+
+        /* Layout */
+        .couple-container { display: flex; justify-content: center; align-items: center; gap: 30px; padding: 50px 20px; }
+        .frame { border: 5px solid #d4af37; background: white; padding: 5px; width: 180px; height: 230px; }
         .frame img { width: 100%; height: 100%; object-fit: cover; }
-        .heart { font-size: 50px; }
+        .heart { font-size: 60px; }
         
-        .services { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px; }
-        .card { background: rgba(255,255,255,0.1); border: 1px solid #d4af37; padding: 15px; width: 220px; border-radius: 8px; }
-        .card img { width: 100%; height: 130px; border-radius: 5px; object-fit: cover; }
-        .rsvp { background: rgba(0,0,0,0.3); padding: 30px; margin: 20px auto; width: 90%; max-width: 500px; border: 1px solid #d4af37; }
+        .services { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 40px; }
+        .card { background: rgba(255,255,255,0.1); border: 2px solid #d4af37; padding: 15px; width: 250px; border-radius: 8px; }
+        .card img { width: 100%; height: 150px; object-fit: cover; }
+        
+        .rsvp { background: rgba(0,0,0,0.4); padding: 30px; margin: 40px auto; width: 80%; max-width: 600px; border: 1px solid #d4af37; }
     </style>
 </head>
 <body>
 
-    <div class="admin-top">
+    <div id="flower-overlay">
+        🌸 🌺 🌷 Loading Celebration... 🌹 🌻 🌼
+        <script>
+            // Create 30 random flying flowers
+            for (let i = 0; i < 30; i++) {
+                let f = document.createElement('div');
+                f.className = 'flower';
+                f.innerHTML = ['🌸','🌺','🌹','🌷'][Math.floor(Math.random()*4)];
+                f.style.setProperty('--x', (Math.random()*1000 - 500) + 'px');
+                f.style.setProperty('--y', (Math.random()*1000 - 500) + 'px');
+                document.getElementById('flower-overlay').appendChild(f);
+            }
+        </script>
+    </div>
+
+    <div class="admin-section">
         <button class="admin-btn" onclick="toggleLogin()">Admin Panel</button>
-        <div id="login-box" class="login-popup">
-            <input type="text" id="u" placeholder="Amish Paudel">
-            <input type="password" id="p" placeholder="Password">
-            <button onclick="login()">Enter</button>
+        <div id="login-box" class="login-box">
+            <input type="text" id="userInput" placeholder="Username">
+            <input type="password" id="passInput" placeholder="Password">
+            <button onclick="checkLogin()">Login</button>
         </div>
     </div>
 
-    <div id="upload-section">
-        <h3>Admin: Upload/Change Photos</h3>
-        <div class="upload-row">
-            <div>Groom: <input type="file" onchange="up(event, 'g')"></div>
-            <div>Bride: <input type="file" onchange="up(event, 'b')"></div>
-            <div>BMW: <input type="file" onchange="up(event, 'c')"></div>
-            <div>Room: <input type="file" onchange="up(event, 'r')"></div>
-            <div>Food: <input type="file" onchange="up(event, 'f')"></div>
+    <div id="admin-panel">
+        <h2>Welcome Amish! Change Photos Below:</h2>
+        <p>(Note: Uploads here are temporary previews. Upload to GitHub for permanent change.)</p>
+        <div>Groom: <input type="file" onchange="preview(event, 'groomImg')"></div>
+        <div>Bride: <input type="file" onchange="preview(event, 'brideImg')"></div>
+        <div>BMW: <input type="file" onchange="preview(event, 'bmwImg')"></div>
+        <div>Room: <input type="file" onchange="preview(event, 'roomImg')"></div>
+        <div>Food: <input type="file" onchange="preview(event, 'foodImg')"></div>
+        <br><button class="admin-btn" onclick="location.reload()">Logout</button>
+    </div>
+
+    <section class="hero">
+        <div class="couple-container">
+            <div><div class="frame"><img id="groomImg" src="groom.jpg" alt="Groom"></div><h3>Amish Paudel</h3></div>
+            <div class="heart">❤️</div>
+            <div><div class="frame"><img id="brideImg" src="bride.jpg" alt="Bride"></div><h3>Naima Debbarma</h3></div>
         </div>
-        <br><button class="admin-btn" onclick="location.reload()">Save & Exit</button>
-    </div>
+        <h1>Amish ❤️ Naima</h1>
+        <p>- Celebrating 2030 -</p>
+    </section>
 
-    <div class="couple-container">
-        <div><div class="frame"><img id="g" src="groom.jpg" alt="Groom"></div><h4>Amish</h4></div>
-        <div class="heart">❤️</div>
-        <div><div class="frame"><img id="b" src="bride.jpg" alt="Bride"></div><h4>Naima</h4></div>
-    </div>
+    <section class="services">
+        <div class="card"><h4>BMW Pickup</h4><img id="bmwImg" src="car.jpg"><p>Available for all guests.</p></div>
+        <div class="card"><h4>Luxury Rooms</h4><img id="roomImg" src="room.jpg"><p>Reserved for special guests.</p></div>
+        <div class="card"><h4>Catering</h4><img id="foodImg" src="food.jpg"><p>Multi-cuisine delights.</p></div>
+    </section>
 
-    <h1>Amish ❤️ Naima</h1>
-    <p>- Celebrating 2030 -</p>
-
-    <div class="services">
-        <div class="card"><h4>BMW Service</h4><img id="c" src="car.jpg"><p>Pickup for guests.</p></div>
-        <div class="card"><h4>Luxury Rooms</h4><img id="r" src="room.jpg"><p>Special stay.</p></div>
-        <div class="card"><h4>Food</h4><img id="f" src="food.jpg"><p>Multi-cuisine.</p></div>
-    </div>
-
-    <div class="rsvp">
-        <h3>Join Celebration</h3>
-        <input type="text" placeholder="Your Name" style="padding: 8px; width: 70%;">
-        <button class="admin-btn" style="margin-top:10px;">Send RSVP</button>
-    </div>
+    <section class="rsvp">
+        <h3>Join Our Celebration</h3>
+        <input type="text" placeholder="Full Name" style="width:70%; padding:10px;">
+        <button class="admin-btn" style="margin-top:10px;">Request Invitation</button>
+    </section>
 
     <script>
         function toggleLogin() {
-            let box = document.getElementById('login-box');
-            box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+            let b = document.getElementById('login-box');
+            b.style.display = (b.style.display === 'flex') ? 'none' : 'flex';
         }
-        function login() {
-            if(document.getElementById('u').value === "Amish Paudel" && document.getElementById('p').value === "amish78") {
-                document.getElementById('upload-section').style.display = 'block';
+
+        function checkLogin() {
+            let u = document.getElementById('userInput').value;
+            let p = document.getElementById('passInput').value;
+            if(u === "Amish Paudel" && p === "amish78") {
+                document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('login-box').style.display = 'none';
-            } else { alert("Access Denied. Check spelling!"); }
+            } else { alert("Access Denied!"); }
         }
-        function up(e, id) {
+
+        function preview(event, id) {
             let reader = new FileReader();
-            reader.onload = function() { document.getElementById(id).src = reader.result; };
-            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = function() { document.getElementById(id).src = reader.result; }
+            reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 </body>
 </html>
-

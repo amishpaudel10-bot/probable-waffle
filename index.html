@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,8 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 50px;
-            animation: fadeOut 1s forwards 3s; /* Fades out after 3s */
+            font-size: 40px;
+            animation: fadeOut 1s forwards 3s;
         }
         .flower { position: absolute; animation: blast 2s ease-out infinite; }
         @keyframes blast {
@@ -24,38 +26,30 @@
         }
         @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
-        /* 2. MAIN STYLING */
-        body { background-color: #4a0404; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        /* 2. MAIN WEB STYLE */
+        body { background-color: #4a0404; color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        .admin-top { position: absolute; top: 10px; right: 10px; z-index: 100; }
+        .admin-btn { background: #d4af37; color: #4a0404; border: none; padding: 5px 10px; font-weight: bold; cursor: pointer; }
+        #admin-panel { display: none; background: #d4af37; color: #4a0404; padding: 20px; }
         
-        /* Admin Section */
-        .admin-section { position: absolute; top: 10px; right: 10px; z-index: 100; }
-        .admin-btn { background: #d4af37; color: #4a0404; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px; }
-        .login-box { background: white; color: black; padding: 15px; border-radius: 5px; display: none; flex-direction: column; gap: 10px; margin-top: 5px; border: 2px solid #d4af37; }
-        #admin-panel { display: none; background: #d4af37; color: #4a0404; padding: 20px; border-bottom: 5px solid #b8860b; }
-
-        /* Layout */
-        .couple-container { display: flex; justify-content: center; align-items: center; gap: 30px; padding: 50px 20px; }
-        .frame { border: 5px solid #d4af37; background: white; padding: 5px; width: 180px; height: 230px; }
+        .couple-container { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 50px 10px; }
+        .frame { border: 4px solid #d4af37; background: white; padding: 5px; width: 150px; height: 200px; }
         .frame img { width: 100%; height: 100%; object-fit: cover; }
-        .heart { font-size: 60px; }
         
-        .services { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 40px; }
-        .card { background: rgba(255,255,255,0.1); border: 2px solid #d4af37; padding: 15px; width: 250px; border-radius: 8px; }
-        .card img { width: 100%; height: 150px; object-fit: cover; }
-        
-        .rsvp { background: rgba(0,0,0,0.4); padding: 30px; margin: 40px auto; width: 80%; max-width: 600px; border: 1px solid #d4af37; }
+        .services { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px; }
+        .card { background: rgba(255,255,255,0.1); border: 1px solid #d4af37; padding: 10px; width: 220px; }
+        .card img { width: 100%; height: 130px; object-fit: cover; }
     </style>
 </head>
 <body>
 
     <div id="flower-overlay">
-        🌸 🌺 🌷 Loading Celebration... 🌹 🌻 🌼
+        🌸 🌺 Celebrating Amish & Naima 🌹 🌷
         <script>
-            // Create 30 random flying flowers
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 40; i++) {
                 let f = document.createElement('div');
                 f.className = 'flower';
-                f.innerHTML = ['🌸','🌺','🌹','🌷'][Math.floor(Math.random()*4)];
+                f.innerHTML = ['🌸','🌺','🌹','🌷','🌼'][Math.floor(Math.random()*5)];
                 f.style.setProperty('--x', (Math.random()*1000 - 500) + 'px');
                 f.style.setProperty('--y', (Math.random()*1000 - 500) + 'px');
                 document.getElementById('flower-overlay').appendChild(f);
@@ -63,67 +57,59 @@
         </script>
     </div>
 
-    <div class="admin-section">
-        <button class="admin-btn" onclick="toggleLogin()">Admin Panel</button>
-        <div id="login-box" class="login-box">
-            <input type="text" id="userInput" placeholder="Username">
-            <input type="password" id="passInput" placeholder="Password">
-            <button onclick="checkLogin()">Login</button>
+    <div class="admin-top">
+        <button class="admin-btn" onclick="showLogin()">Admin Panel</button>
+        <div id="login-box" style="display:none; background:white; padding:10px; margin-top:5px; border:2px solid #d4af37;">
+            <input type="text" id="userIn" placeholder="Username" style="display:block; margin-bottom:5px;">
+            <input type="password" id="passIn" placeholder="Password" style="display:block; margin-bottom:5px;">
+            <button onclick="doLogin()" style="width:100%;">Login</button>
         </div>
     </div>
 
     <div id="admin-panel">
-        <h2>Welcome Amish! Change Photos Below:</h2>
-        <p>(Note: Uploads here are temporary previews. Upload to GitHub for permanent change.)</p>
-        <div>Groom: <input type="file" onchange="preview(event, 'groomImg')"></div>
-        <div>Bride: <input type="file" onchange="preview(event, 'brideImg')"></div>
-        <div>BMW: <input type="file" onchange="preview(event, 'bmwImg')"></div>
-        <div>Room: <input type="file" onchange="preview(event, 'roomImg')"></div>
-        <div>Food: <input type="file" onchange="preview(event, 'foodImg')"></div>
-        <br><button class="admin-btn" onclick="location.reload()">Logout</button>
+        <h3>Admin: Update Your Photos</h3>
+        Groom: <input type="file" onchange="chg(event, 'g')"><br>
+        Bride: <input type="file" onchange="chg(event, 'b')"><br>
+        BMW: <input type="file" onchange="chg(event, 'c')"><br>
+        Room: <input type="file" onchange="chg(event, 'r')"><br>
+        Food: <input type="file" onchange="chg(event, 'f')"><br>
+        <br><button class="admin-btn" onclick="location.reload()">Save & Logout</button>
     </div>
 
-    <section class="hero">
-        <div class="couple-container">
-            <div><div class="frame"><img id="groomImg" src="groom.jpg" alt="Groom"></div><h3>Amish Paudel</h3></div>
-            <div class="heart">❤️</div>
-            <div><div class="frame"><img id="brideImg" src="bride.jpg" alt="Bride"></div><h3>Naima Debbarma</h3></div>
-        </div>
-        <h1>Amish ❤️ Naima</h1>
-        <p>- Celebrating 2030 -</p>
-    </section>
+    <div class="couple-container">
+        <div><div class="frame"><img id="g" src="groom.jpg" alt="Groom"></div><h4>Amish</h4></div>
+        <div style="font-size:40px;">❤️</div>
+        <div><div class="frame"><img id="b" src="bride.jpg" alt="Bride"></div><h4>Naima</h4></div>
+    </div>
 
-    <section class="services">
-        <div class="card"><h4>BMW Pickup</h4><img id="bmwImg" src="car.jpg"><p>Available for all guests.</p></div>
-        <div class="card"><h4>Luxury Rooms</h4><img id="roomImg" src="room.jpg"><p>Reserved for special guests.</p></div>
-        <div class="card"><h4>Catering</h4><img id="foodImg" src="food.jpg"><p>Multi-cuisine delights.</p></div>
-    </section>
-
-    <section class="rsvp">
-        <h3>Join Our Celebration</h3>
-        <input type="text" placeholder="Full Name" style="width:70%; padding:10px;">
-        <button class="admin-btn" style="margin-top:10px;">Request Invitation</button>
-    </section>
+    <h1>Amish ❤️ Naima</h1>
+    <div class="services">
+        <div class="card"><h4>BMW</h4><img id="c" src="car.jpg"></div>
+        <div class="card"><h4>Room</h4><img id="r" src="room.jpg"></div>
+        <div class="card"><h4>Food</h4><img id="f" src="food.jpg"></div>
+    </div>
 
     <script>
-        function toggleLogin() {
-            let b = document.getElementById('login-box');
-            b.style.display = (b.style.display === 'flex') ? 'none' : 'flex';
+        function showLogin() {
+            let box = document.getElementById('login-box');
+            box.style.display = (box.style.display === 'none') ? 'block' : 'none';
         }
-
-        function checkLogin() {
-            let u = document.getElementById('userInput').value;
-            let p = document.getElementById('passInput').value;
+        function doLogin() {
+            let u = document.getElementById('userIn').value;
+            let p = document.getElementById('passIn').value;
+            // CHECKING USERNAME AND PASSWORD
             if(u === "Amish Paudel" && p === "amish78") {
                 document.getElementById('admin-panel').style.display = 'block';
                 document.getElementById('login-box').style.display = 'none';
-            } else { alert("Access Denied!"); }
+                alert("Welcome Amish!");
+            } else {
+                alert("Access Denied! Check spelling.");
+            }
         }
-
-        function preview(event, id) {
+        function chg(e, id) {
             let reader = new FileReader();
-            reader.onload = function() { document.getElementById(id).src = reader.result; }
-            reader.readAsDataURL(event.target.files[0]);
+            reader.onload = function() { document.getElementById(id).src = reader.result; };
+            reader.readAsDataURL(e.target.files[0]);
         }
     </script>
 </body>
